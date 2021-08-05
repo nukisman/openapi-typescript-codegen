@@ -20,7 +20,9 @@ export type Options = {
     exportServices?: boolean;
     exportModels?: boolean;
     exportSchemas?: boolean;
+    exportClient?: boolean;
     request?: string;
+    clientName?: string;
     write?: boolean;
 };
 
@@ -37,6 +39,8 @@ export type Options = {
  * @param exportServices: Generate services
  * @param exportModels: Generate models
  * @param exportSchemas: Generate schemas
+ * @param exportClient: Generate client class
+ * @param clientName: Custom client class name
  * @param request: Path to custom request file
  * @param write Write the files to disk (true or false)
  */
@@ -50,6 +54,8 @@ export async function generate({
     exportServices = true,
     exportModels = true,
     exportSchemas = false,
+    exportClient = false,
+    clientName = 'AppClient',
     request,
     write = true,
 }: Options): Promise<void> {
@@ -64,17 +70,17 @@ export async function generate({
     switch (openApiVersion) {
         case OpenApiVersion.V2: {
             const client = parseV2(openApi);
-            const clientFinal = postProcessClient(client);
+            const clientFinal = postProcessClient(client, exportClient);
             if (!write) break;
-            await writeClient(clientFinal, templates, output, httpClient, useOptions, useUnionTypes, exportCore, exportServices, exportModels, exportSchemas, request);
+            await writeClient(clientFinal, templates, output, httpClient, useOptions, useUnionTypes, exportCore, exportServices, exportModels, exportSchemas, exportClient, clientName, request);
             break;
         }
 
         case OpenApiVersion.V3: {
             const client = parseV3(openApi);
-            const clientFinal = postProcessClient(client);
+            const clientFinal = postProcessClient(client, exportClient);
             if (!write) break;
-            await writeClient(clientFinal, templates, output, httpClient, useOptions, useUnionTypes, exportCore, exportServices, exportModels, exportSchemas, request);
+            await writeClient(clientFinal, templates, output, httpClient, useOptions, useUnionTypes, exportCore, exportServices, exportModels, exportSchemas, exportClient, clientName, request);
             break;
         }
     }

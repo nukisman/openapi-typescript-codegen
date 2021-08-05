@@ -5,6 +5,7 @@ import { HttpClient } from '../HttpClient';
 import { mkdir, rmdir } from './fileSystem';
 import { isSubDirectory } from './isSubdirectory';
 import { Templates } from './registerHandlebarTemplates';
+import { writeAppClient } from './writeAppClient';
 import { writeClientCore } from './writeClientCore';
 import { writeClientIndex } from './writeClientIndex';
 import { writeClientModels } from './writeClientModels';
@@ -23,6 +24,8 @@ import { writeClientServices } from './writeClientServices';
  * @param exportServices: Generate services
  * @param exportModels: Generate models
  * @param exportSchemas: Generate schemas
+ * @param exportClient: Generate client class
+ * @param clientName: Custom client class name
  * @param request: Path to custom request file
  */
 export async function writeClient(
@@ -36,6 +39,8 @@ export async function writeClient(
     exportServices: boolean,
     exportModels: boolean,
     exportSchemas: boolean,
+    exportClient: boolean,
+    clientName: string,
     request?: string
 ): Promise<void> {
     const outputPath = resolve(process.cwd(), output);
@@ -51,13 +56,13 @@ export async function writeClient(
     if (exportCore) {
         await rmdir(outputPathCore);
         await mkdir(outputPathCore);
-        await writeClientCore(client, templates, outputPathCore, httpClient, request);
+        await writeClientCore(client, templates, outputPathCore, httpClient, exportClient, request);
     }
 
     if (exportServices) {
         await rmdir(outputPathServices);
         await mkdir(outputPathServices);
-        await writeClientServices(client.services, templates, outputPathServices, httpClient, useUnionTypes, useOptions);
+        await writeClientServices(client.services, templates, outputPathServices, httpClient, useUnionTypes, useOptions, exportClient);
     }
 
     if (exportSchemas) {
@@ -72,8 +77,12 @@ export async function writeClient(
         await writeClientModels(client.models, templates, outputPathModels, httpClient, useUnionTypes);
     }
 
-    if (exportCore || exportServices || exportSchemas || exportModels) {
+    if (exportClient) {
+        await writeAppClient(client, templates, outputPath, httpClient, clientName);
+    }
+
+    if (exportCore || exportServices || exportSchemas || exportModels || exportClient) {
         await mkdir(outputPath);
-        await writeClientIndex(client, templates, outputPath, useUnionTypes, exportCore, exportServices, exportModels, exportSchemas);
+        await writeClientIndex(client, templates, outputPath, clientName, useUnionTypes, exportCore, exportServices, exportModels, exportSchemas, exportClient, httpClient);
     }
 }

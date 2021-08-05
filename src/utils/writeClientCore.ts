@@ -3,6 +3,7 @@ import { resolve } from 'path';
 import type { Client } from '../client/interfaces/Client';
 import { HttpClient } from '../HttpClient';
 import { copyFile, exists, writeFile } from './fileSystem';
+import { getHttpRequestName } from './getHttpRequestName';
 import { Templates } from './registerHandlebarTemplates';
 
 /**
@@ -11,13 +12,15 @@ import { Templates } from './registerHandlebarTemplates';
  * @param templates The loaded handlebar templates
  * @param outputPath Directory to write the generated files to
  * @param httpClient The selected httpClient (fetch, xhr, node or axios)
+ * @param exportClient Create client class
  * @param request: Path to custom request file
  */
-export async function writeClientCore(client: Client, templates: Templates, outputPath: string, httpClient: HttpClient, request?: string): Promise<void> {
+export async function writeClientCore(client: Client, templates: Templates, outputPath: string, httpClient: HttpClient, exportClient: boolean, request?: string): Promise<void> {
     const context = {
         httpClient,
         server: client.server,
         version: client.version,
+        exportClient,
     };
 
     await writeFile(resolve(outputPath, 'OpenAPI.ts'), templates.core.settings(context));
@@ -25,7 +28,12 @@ export async function writeClientCore(client: Client, templates: Templates, outp
     await writeFile(resolve(outputPath, 'ApiRequestOptions.ts'), templates.core.apiRequestOptions({}));
     await writeFile(resolve(outputPath, 'ApiResult.ts'), templates.core.apiResult({}));
     await writeFile(resolve(outputPath, 'CancelablePromise.ts'), templates.core.cancelablePromise({}));
-    await writeFile(resolve(outputPath, 'request.ts'), templates.core.request(context));
+    if (exportClient) {
+        await writeFile(resolve(outputPath, 'BaseHttpRequest.ts'), templates.core.baseHttpRequest({}));
+        await writeFile(resolve(outputPath, `${getHttpRequestName(httpClient)}.ts`), templates.core.concreteHttpRequest(context));
+    } else {
+        await writeFile(resolve(outputPath, `request.ts`), templates.core.concreteHttpRequest(context));
+    }
 
     if (request) {
         const requestFile = resolve(process.cwd(), request);

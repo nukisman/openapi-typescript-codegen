@@ -5,10 +5,7 @@ module.exports = {
         {
             displayName: 'UNIT',
             testEnvironment: 'node',
-            testMatch: [
-                '<rootDir>/src/**/*.spec.ts',
-                '<rootDir>/test/index.spec.js',
-            ],
+            testMatch: ['<rootDir>/src/**/*.spec.ts', '<rootDir>/test/index.spec.js', '<rootDir>/test/index.client.spec.js'],
             moduleFileExtensions: ['js', 'ts', 'd.ts'],
             moduleNameMapper: {
                 '\\.hbs$': '<rootDir>/src/templates/__mocks__/index.js',
@@ -31,10 +28,5 @@ module.exports = {
             ],
         },
     ],
-    collectCoverageFrom: [
-        '<rootDir>/src/**/*.ts',
-        '!<rootDir>/src/**/*.d.ts',
-        '!<rootDir>/bin',
-        '!<rootDir>/dist',
-    ],
+    collectCoverageFrom: ['<rootDir>/src/**/*.ts', '!<rootDir>/src/**/*.d.ts', '!<rootDir>/bin', '!<rootDir>/dist'],
 };

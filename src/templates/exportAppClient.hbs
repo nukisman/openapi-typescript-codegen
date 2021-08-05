@@ -1,0 +1,32 @@
+{{>header}}
+
+import { BaseHttpRequest } from './core/BaseHttpRequest';
+import type { OpenAPIConfig } from './core/OpenAPI';
+import { {{{httpClientRequest}}} } from './core/{{{httpClientRequest}}}';
+{{#if services}}
+{{#each services}}
+import { {{{name}}} } from './services/{{{name}}}';
+{{/each}}
+{{/if}}
+
+export class {{{clientName}}} {
+{{#each services}}
+    readonly {{{shortName}}}: {{{name}}};
+{{/each}}
+    readonly request: BaseHttpRequest;
+
+    constructor(openApiConfig?: OpenAPIConfig, HttpRequest: new (config: OpenAPIConfig) => BaseHttpRequest = {{{httpClientRequest}}}) {
+        this.request = new HttpRequest({
+            BASE: openApiConfig?.BASE ?? '{{{server}}}',
+            VERSION: openApiConfig?.VERSION ?? '{{{version}}}',
+            WITH_CREDENTIALS: openApiConfig?.WITH_CREDENTIALS ?? false,
+            TOKEN: openApiConfig?.TOKEN,
+            USERNAME: openApiConfig?.USERNAME,
+            PASSWORD: openApiConfig?.PASSWORD,
+            HEADERS: openApiConfig?.HEADERS,
+        });
+        {{#each services}}
+        this.{{{shortName}}} = new {{{name}}}(this.request);
+        {{/each}}
+    }
+}

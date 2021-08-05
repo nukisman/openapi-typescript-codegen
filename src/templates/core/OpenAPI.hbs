@@ -5,18 +5,18 @@ import type { ApiRequestOptions } from './ApiRequestOptions';
 type Resolver<T> = (options: ApiRequestOptions) => Promise<T>;
 type Headers = Record<string, string>;
 
-type Config = {
-    BASE: string;
-    VERSION: string;
-    WITH_CREDENTIALS: boolean;
+export type OpenAPIConfig = {
+    BASE?: string;
+    VERSION?: string;
+    WITH_CREDENTIALS?: boolean;
     TOKEN?: string | Resolver<string>;
     USERNAME?: string | Resolver<string>;
     PASSWORD?: string | Resolver<string>;
     HEADERS?: Headers | Resolver<Headers>;
     ENCODE_PATH?: (path: string) => string;
 }
-
-export const OpenAPI: Config = {
+{{#unless @root.exportClient}}
+export const OpenAPI: OpenAPIConfig = {
     BASE: '{{{server}}}',
     VERSION: '{{{version}}}',
     WITH_CREDENTIALS: false,
@@ -26,3 +26,4 @@ export const OpenAPI: Config = {
     HEADERS: undefined,
     ENCODE_PATH: undefined,
 };
+{{/unless}}

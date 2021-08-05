@@ -1,5 +1,6 @@
 async function sendRequest(
     options: ApiRequestOptions,
+    config: OpenAPIConfig,
     url: string,
     formData: FormData | undefined,
     body: BodyInit | undefined,
@@ -15,7 +16,7 @@ async function sendRequest(
         signal: controller.signal,
     };
 
-    if (OpenAPI.WITH_CREDENTIALS) {
+    if (config.WITH_CREDENTIALS) {
         request.credentials = 'include';
     }
 

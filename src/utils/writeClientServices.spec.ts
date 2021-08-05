@@ -18,6 +18,7 @@ describe('writeClientServices', () => {
 
         const templates: Templates = {
             index: () => 'index',
+            client: () => 'client',
             exports: {
                 model: () => 'model',
                 schema: () => 'schema',
@@ -28,11 +29,12 @@ describe('writeClientServices', () => {
                 apiError: () => 'apiError',
                 apiRequestOptions: () => 'apiRequestOptions',
                 apiResult: () => 'apiResult',
-                request: () => 'request',
+                baseHttpRequest: () => 'baseHttpRequest',
+                concreteHttpRequest: () => 'concreteHttpRequest',
             },
         };
 
-        await writeClientServices(services, templates, '/', HttpClient.FETCH, false, false);
+        await writeClientServices(services, templates, '/', HttpClient.FETCH, false, false, false);
 
         expect(writeFile).toBeCalledWith('/MyService.ts', 'service');
     });

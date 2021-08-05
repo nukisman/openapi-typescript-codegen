@@ -48,6 +48,8 @@ $ openapi --help
     --exportModels <value>    Write models to disk (default: true)
     --exportSchemas <value>   Write schemas to disk (default: false)
     --request <value>         Path to custom request file
+    --exportClient <value>    Generate and write client class to disk (default: false)
+    --name <value>            Custom client class name (default: "AppClient")
     -h, --help                display help for command
 
   Examples
@@ -392,6 +394,29 @@ const getToken = async () => {
 }
 
 OpenAPI.TOKEN = getToken;
+```
+
+### Generate client instance with `--exportClient` option
+
+The OpenAPI generator allows to create client instances to support the multiple backend services use case.
+The generated client uses an instance of the server configuration and not the global `OpenAPI` constant.
+
+To generate a client instance, use `--exportClient` option. To set a custom name to the client class, use `--name` option.
+
+```
+openapi --input ./spec.json --output ./dist --exportClient true --name DemoAppClient
+```
+
+The generated client will be exported from the `index` file and can be used as shown below:
+```typescript
+// create the client instance with server and authentication details
+const appClient = new DemoAppClient({ BASE: 'http://server-host.com', TOKEN: '1234' });
+
+// use the client instance to make the API call
+const res: OrganizationResponse = await appClient.organizations.createOrganization({
+  name: 'OrgName',
+  description: 'OrgDescription',
+});
 ```
 
 ### References
