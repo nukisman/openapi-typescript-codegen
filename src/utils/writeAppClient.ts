@@ -19,10 +19,13 @@ export async function writeAppClient(client: Client, templates: Templates, outpu
     await writeFile(
         resolve(outputPath, 'client.ts'),
         templates.client({
-            services: sortServicesByName(client.services).map(s => ({
-                name: s.name,
-                shortName: s.name.replace('Service', '').toLowerCase(),
-            })),
+            services: sortServicesByName(client.services)
+                .filter(s => s.name !== 'Service')
+                .map(s => ({
+                    name: s.name,
+                    shortName: s.name.replace('Service', '').toLowerCase(),
+                })),
+            service: client.services.find(s => s.name === 'Service'),
             clientName,
             httpClientRequest: getHttpRequestName(httpClient),
             server: client.server,
