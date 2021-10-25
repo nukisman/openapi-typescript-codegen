@@ -3,6 +3,7 @@
 import type { ApiRequestOptions } from './ApiRequestOptions';
 import type { ApiResult } from './ApiResult';
 import type { OpenAPIConfig } from './OpenAPI';
+import type { CancelablePromise } from './CancelablePromise';
 
 export class BaseHttpRequest {
     readonly openApiConfig: OpenAPIConfig;
@@ -11,7 +12,7 @@ export class BaseHttpRequest {
         this.openApiConfig = openApiConfig;
     }
 
-    async request(options: ApiRequestOptions): Promise<ApiResult> {
+    request<T>(options: ApiRequestOptions): CancelablePromise<T> {
         throw new Error('Not Implemented');
     }
 }

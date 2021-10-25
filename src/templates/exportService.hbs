@@ -47,8 +47,8 @@ export class {{{name}}} {
     {{/each}}
     * @throws ApiError
     */
-    public{{#unless @root.exportClient}} static{{/unless}} async {{{name}}}({{>parameters}}): CancelablePromise<{{>result}}> {
-        const result = await {{#if @root.exportClient}}this.httpRequest.request{{else}}__request{{/if}}({
+    public{{#unless @root.exportClient}} static{{/unless}} {{{name}}}({{>parameters}}): CancelablePromise<{{>result}}> {
+        return {{#if @root.exportClient}}this.httpRequest.request{{else}}__request{{/if}}({
             method: '{{{method}}}',
             path: `{{{path}}}`,
             {{#if parametersCookie}}

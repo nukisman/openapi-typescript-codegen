@@ -27,6 +27,7 @@ export class {{{clientName}}} {{#if service}}extends {{{service.name}}} {{/if}}{
             USERNAME: openApiConfig?.USERNAME,
             PASSWORD: openApiConfig?.PASSWORD,
             HEADERS: openApiConfig?.HEADERS,
+            ENCODE_PATH: openApiConfig?.ENCODE_PATH,
         });
         {{#if service}}
         super(request);

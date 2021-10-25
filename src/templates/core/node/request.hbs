@@ -77,7 +77,7 @@ export class NodeHttpRequest extends BaseHttpRequest {
     * @returns ApiResult
     * @throws ApiError
     */
-    async request(options: ApiRequestOptions): Promise<ApiResult> {
+    request<T>(options: ApiRequestOptions): CancelablePromise<T> {
         return new CancelablePromise(async (resolve, reject, onCancel) => {
             try {
                 const url = getUrl(options, this.openApiConfig);

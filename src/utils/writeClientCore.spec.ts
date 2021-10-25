@@ -41,8 +41,7 @@ describe('writeClientCore', () => {
         expect(writeFile).toBeCalledWith('/ApiRequestOptions.ts', 'apiRequestOptions');
         expect(writeFile).toBeCalledWith('/ApiResult.ts', 'apiResult');
         expect(writeFile).toBeCalledWith('/CancelablePromise.ts', 'cancelablePromise');
-        expect(writeFile).toBeCalledWith('/BaseHttpRequest.ts', 'baseHttpRequest');
-        expect(writeFile).toBeCalledWith('/FetchHttpRequest.ts', 'concreteHttpRequest');
+        expect(writeFile).toBeCalledWith('/request.ts', 'concreteHttpRequest');
     });
 
     it('should write to filesystem when exportClient true', async () => {

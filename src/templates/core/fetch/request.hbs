@@ -66,10 +66,10 @@ export class FetchHttpRequest extends BaseHttpRequest {
     /**
     * Request using fetch client
     * @param options The request options from the the service
-    * @returns ApiResult
+    * @returns CancelablePromise<T>
     * @throws ApiError
     */
-    async request(options: ApiRequestOptions): Promise<ApiResult> {
+    request<T>(options: ApiRequestOptions): CancelablePromise<T> {
         return new CancelablePromise(async (resolve, reject, onCancel) => {
             try {
                 const url = getUrl(options, this.openApiConfig);
