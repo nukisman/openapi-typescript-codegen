@@ -14,6 +14,7 @@ export type Options = {
     exportServices?: boolean;
     exportModels?: boolean;
     exportSchemas?: boolean;
+    exportClient?: boolean;
     request?: string;
     write?: boolean;
 };
