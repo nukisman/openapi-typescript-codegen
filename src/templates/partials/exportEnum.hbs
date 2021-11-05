@@ -3,17 +3,12 @@
  * {{{description}}}
  */
 {{/if}}
-export enum {{{name}}} {
-    {{#each enum}}
+export type {{{name}}} =
+{{#each enum}}
     {{#if description}}
-    /**
-     * {{{description}}}
-     */
+        /**
+        * {{{description}}}
+        */
     {{/if}}
-    {{#containsSpaces name}}
-    "{{{name}}}" = {{{value}}},
-    {{else}}
-    {{{name}}} = {{{value}}},
-    {{/containsSpaces}}
-    {{/each}}
-}
+        | {{{value}}}
+{{/each}}
