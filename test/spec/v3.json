@@ -318,6 +318,17 @@
                 }
             }
         },
+        "/api/v{api-version}/requestBody/formData": {
+            "post": {
+                "operationId": "testFormData",
+                "tags": [
+                    "RequestBody"
+                ],
+                "requestBody": {
+                    "$ref": "#/components/requestBodies/FormDataRequestBody"
+                }
+            }
+        },
         "/api/v{api-version}/defaults": {
             "get": {
                 "tags": [
@@ -1267,6 +1278,18 @@
                         }
                     }
                 }
+            },
+            "FormDataRequestBody": {
+                "description": "A reusable FormData request body",
+                "required": false,
+                "content": {
+                    "multipart/form-data": {
+                        "description": "FormData message",
+                        "schema": {
+                            "$ref": "#/components/schemas/ModelWithBinaryString"
+                        }
+                    }
+                }
             }
         },
         "schemas": {
@@ -1480,6 +1503,17 @@
                     "prop": {
                         "description": "This is a simple string property",
                         "type": "string"
+                    }
+                }
+            },
+            "ModelWithBinaryString": {
+                "description": "This is a model with one binary string property",
+                "type": "object",
+                "properties": {
+                    "prop": {
+                        "description": "This is a binary string property",
+                        "type": "string",
+                        "format": "binary"
                     }
                 }
             },
