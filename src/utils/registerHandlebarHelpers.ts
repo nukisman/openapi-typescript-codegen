@@ -1,3 +1,4 @@
+import camelcase from 'camelcase';
 import * as Handlebars from 'handlebars/runtime';
 
 import { Enum } from '../client/interfaces/Enum';
@@ -50,5 +51,9 @@ export function registerHandlebarHelpers(root: { httpClient: HttpClient; useOpti
                 .filter(unique)
                 .join(' | ')
         );
+    });
+
+    Handlebars.registerHelper('camelcase', function (this: any, str: string) {
+        return camelcase(str);
     });
 }

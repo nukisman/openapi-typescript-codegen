@@ -3,12 +3,15 @@
  * {{{description}}}
  */
 {{/if}}
-export type {{{name}}} =
+export const {{{camelcase name}}}Values = [
 {{#each enum}}
     {{#if description}}
         /**
         * {{{description}}}
         */
     {{/if}}
-        | {{{value}}}
+    {{{value}}},
 {{/each}}
+] as const;
+
+export type {{{name}}} = typeof {{{camelcase name}}}Values[number];
