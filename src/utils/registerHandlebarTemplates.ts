@@ -24,6 +24,7 @@ import functionIsString from '../templates/core/functions/isString.hbs';
 import functionIsStringWithValue from '../templates/core/functions/isStringWithValue.hbs';
 import functionIsSuccess from '../templates/core/functions/isSuccess.hbs';
 import functionResolve from '../templates/core/functions/resolve.hbs';
+import functionFilterHeaders from '../templates/core/functions/filterHeaders.hbs';
 import templateCoreIndex from '../templates/core/index.hbs';
 import nodeGetHeaders from '../templates/core/node/getHeaders.hbs';
 import nodeGetRequestBody from '../templates/core/node/getRequestBody.hbs';
@@ -194,6 +195,7 @@ export function registerHandlebarTemplates(root: { httpClient: HttpClient; useOp
     Handlebars.registerPartial('functions/isSuccess', Handlebars.template(functionIsSuccess));
     Handlebars.registerPartial('functions/deepAssign', Handlebars.template(functionDeepAssign));
     Handlebars.registerPartial('functions/resolve', Handlebars.template(functionResolve));
+    Handlebars.registerPartial('functions/filterHeaders', Handlebars.template(functionFilterHeaders));
 
     // Specific files for the fetch client implementation
     Handlebars.registerPartial('fetch/getHeaders', Handlebars.template(fetchGetHeaders));

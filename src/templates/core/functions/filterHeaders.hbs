@@ -1,0 +1,8 @@
+function filterHeaders(headers: Record<string, unknown>): Record<string, unknown> {
+    return Object.entries(headers).reduce((acc, [k, v]) => {
+        if (v !== undefined) {
+            acc[k] = v;
+        }
+        return acc;
+    }, {} as Record<string, unknown>);
+}

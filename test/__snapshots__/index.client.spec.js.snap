@@ -154,10 +154,6 @@ function isBlob(value: any): value is Blob {
     return value instanceof Blob;
 }
 
-function isFormData(value: any): value is FormData {
-    return value instanceof FormData;
-}
-
 function getQueryString(params: Record<string, any>): string {
     const qs: string[] = [];
     Object.keys(params).forEach(key => {
@@ -188,6 +184,10 @@ function getUrl(options: ApiRequestOptions, config: ClientConfig): string {
     return url;
 }
 
+function isFormData(value: any): value is FormData {
+    return value instanceof FormData;
+}
+
 function getFormData(params: Record<string, any>): FormData {
     const formData = new FormData();
     Object.keys(params).forEach(key => {
@@ -208,6 +208,15 @@ async function resolve<T>(options: ApiRequestOptions, resolver?: T | Resolver<T>
     return resolver;
 }
 
+function filterHeaders(headers: Record<string, unknown>): Record<string, unknown> {
+    return Object.entries(headers).reduce((acc, [k, v]) => {
+        if (v !== undefined) {
+            acc[k] = v;
+        }
+        return acc;
+    }, {} as Record<string, unknown>);
+}
+
 async function getHeaders(options: ApiRequestOptions, config: ClientConfig): Promise<Headers> {
     const token = await resolve(options, config.token);
     const username = await resolve(options, config.username);
@@ -217,7 +226,7 @@ async function getHeaders(options: ApiRequestOptions, config: ClientConfig): Pro
     const headers = new Headers({
         Accept: 'application/json',
         ...defaultHeaders,
-        ...options.headers,
+        ...filterHeaders(options.headers),
     });
 
     if (isStringWithValue(token)) {
@@ -747,10 +756,6 @@ function isBlob(value: any): value is Blob {
     return value instanceof Blob;
 }
 
-function isFormData(value: any): value is FormData {
-    return value instanceof FormData;
-}
-
 function getQueryString(params: Record<string, any>): string {
     const qs: string[] = [];
     Object.keys(params).forEach(key => {
@@ -781,6 +786,10 @@ function getUrl(options: ApiRequestOptions, config: ClientConfig): string {
     return url;
 }
 
+function isFormData(value: any): value is FormData {
+    return value instanceof FormData;
+}
+
 function getFormData(params: Record<string, any>): FormData {
     const formData = new FormData();
     Object.keys(params).forEach(key => {
@@ -801,6 +810,15 @@ async function resolve<T>(options: ApiRequestOptions, resolver?: T | Resolver<T>
     return resolver;
 }
 
+function filterHeaders(headers: Record<string, unknown>): Record<string, unknown> {
+    return Object.entries(headers).reduce((acc, [k, v]) => {
+        if (v !== undefined) {
+            acc[k] = v;
+        }
+        return acc;
+    }, {} as Record<string, unknown>);
+}
+
 async function getHeaders(options: ApiRequestOptions, config: ClientConfig): Promise<Headers> {
     const token = await resolve(options, config.token);
     const username = await resolve(options, config.username);
@@ -810,7 +828,7 @@ async function getHeaders(options: ApiRequestOptions, config: ClientConfig): Pro
     const headers = new Headers({
         Accept: 'application/json',
         ...defaultHeaders,
-        ...options.headers,
+        ...filterHeaders(options.headers),
     });
 
     if (isStringWithValue(token)) {
@@ -1161,11 +1179,13 @@ exports[`v2 should generate with exportClient: ./test/generated/v2_client/models
 /**
  * Success=1,Warning=2,Error=3
  */
-export type EnumFromDescription =
-| 1
-| 2
-| 3
-"
+export const enumFromDescriptionValues = [
+    1,
+    2,
+    3,
+] as const;
+
+export type EnumFromDescription = typeof enumFromDescriptionValues[number];"
 `;
 
 exports[`v2 should generate with exportClient: ./test/generated/v2_client/models/EnumWithExtensions.ts 1`] = `
@@ -1177,20 +1197,22 @@ exports[`v2 should generate with exportClient: ./test/generated/v2_client/models
 /**
  * This is a simple enum with numbers
  */
-export type EnumWithExtensions =
-/**
- * Used when the status of something is successful
- */
-| 200
-/**
- * Used when the status of something has a warning
- */
-| 400
-/**
- * Used when the status of something has an error
- */
-| 500
-"
+export const enumWithExtensionsValues = [
+    /**
+     * Used when the status of something is successful
+     */
+    200,
+    /**
+     * Used when the status of something has a warning
+     */
+    400,
+    /**
+     * Used when the status of something has an error
+     */
+    500,
+] as const;
+
+export type EnumWithExtensions = typeof enumWithExtensionsValues[number];"
 `;
 
 exports[`v2 should generate with exportClient: ./test/generated/v2_client/models/EnumWithNumbers.ts 1`] = `
@@ -1202,23 +1224,25 @@ exports[`v2 should generate with exportClient: ./test/generated/v2_client/models
 /**
  * This is a simple enum with numbers
  */
-export type EnumWithNumbers =
-| 1
-| 2
-| 3
-| 1.1
-| 1.2
-| 1.3
-| 100
-| 200
-| 300
-| -100
-| -200
-| -300
-| -1.1
-| -1.2
-| -1.3
-"
+export const enumWithNumbersValues = [
+    1,
+    2,
+    3,
+    1.1,
+    1.2,
+    1.3,
+    100,
+    200,
+    300,
+    -100,
+    -200,
+    -300,
+    -1.1,
+    -1.2,
+    -1.3,
+] as const;
+
+export type EnumWithNumbers = typeof enumWithNumbersValues[number];"
 `;
 
 exports[`v2 should generate with exportClient: ./test/generated/v2_client/models/EnumWithStrings.ts 1`] = `
@@ -1230,11 +1254,13 @@ exports[`v2 should generate with exportClient: ./test/generated/v2_client/models
 /**
  * This is a simple enum with strings
  */
-export type EnumWithStrings =
-| 'Success'
-| 'Warning'
-| 'Error'
-"
+export const enumWithStringsValues = [
+    'Success',
+    'Warning',
+    'Error',
+] as const;
+
+export type EnumWithStrings = typeof enumWithStringsValues[number];"
 `;
 
 exports[`v2 should generate with exportClient: ./test/generated/v2_client/models/ModelThatExtends.ts 1`] = `
@@ -3960,10 +3986,6 @@ function isBlob(value: any): value is Blob {
     return value instanceof Blob;
 }
 
-function isFormData(value: any): value is FormData {
-    return value instanceof FormData;
-}
-
 function getQueryString(params: Record<string, any>): string {
     const qs: string[] = [];
     Object.keys(params).forEach(key => {
@@ -3994,6 +4016,10 @@ function getUrl(options: ApiRequestOptions, config: ClientConfig): string {
     return url;
 }
 
+function isFormData(value: any): value is FormData {
+    return value instanceof FormData;
+}
+
 function getFormData(params: Record<string, any>): FormData {
     const formData = new FormData();
     Object.keys(params).forEach(key => {
@@ -4014,6 +4040,15 @@ async function resolve<T>(options: ApiRequestOptions, resolver?: T | Resolver<T>
     return resolver;
 }
 
+function filterHeaders(headers: Record<string, unknown>): Record<string, unknown> {
+    return Object.entries(headers).reduce((acc, [k, v]) => {
+        if (v !== undefined) {
+            acc[k] = v;
+        }
+        return acc;
+    }, {} as Record<string, unknown>);
+}
+
 async function getHeaders(options: ApiRequestOptions, config: ClientConfig): Promise<Headers> {
     const token = await resolve(options, config.token);
     const username = await resolve(options, config.username);
@@ -4023,7 +4058,7 @@ async function getHeaders(options: ApiRequestOptions, config: ClientConfig): Pro
     const headers = new Headers({
         Accept: 'application/json',
         ...defaultHeaders,
-        ...options.headers,
+        ...filterHeaders(options.headers),
     });
 
     if (isStringWithValue(token)) {
@@ -4485,10 +4520,6 @@ function isBlob(value: any): value is Blob {
     return value instanceof Blob;
 }
 
-function isFormData(value: any): value is FormData {
-    return value instanceof FormData;
-}
-
 function getQueryString(params: Record<string, any>): string {
     const qs: string[] = [];
     Object.keys(params).forEach(key => {
@@ -4519,6 +4550,10 @@ function getUrl(options: ApiRequestOptions, config: ClientConfig): string {
     return url;
 }
 
+function isFormData(value: any): value is FormData {
+    return value instanceof FormData;
+}
+
 function getFormData(params: Record<string, any>): FormData {
     const formData = new FormData();
     Object.keys(params).forEach(key => {
@@ -4539,6 +4574,15 @@ async function resolve<T>(options: ApiRequestOptions, resolver?: T | Resolver<T>
     return resolver;
 }
 
+function filterHeaders(headers: Record<string, unknown>): Record<string, unknown> {
+    return Object.entries(headers).reduce((acc, [k, v]) => {
+        if (v !== undefined) {
+            acc[k] = v;
+        }
+        return acc;
+    }, {} as Record<string, unknown>);
+}
+
 async function getHeaders(options: ApiRequestOptions, config: ClientConfig): Promise<Headers> {
     const token = await resolve(options, config.token);
     const username = await resolve(options, config.username);
@@ -4548,7 +4592,7 @@ async function getHeaders(options: ApiRequestOptions, config: ClientConfig): Pro
     const headers = new Headers({
         Accept: 'application/json',
         ...defaultHeaders,
-        ...options.headers,
+        ...filterHeaders(options.headers),
     });
 
     if (isStringWithValue(token)) {
@@ -5087,10 +5131,6 @@ function isBlob(value: any): value is Blob {
     return value instanceof Blob;
 }
 
-function isFormData(value: any): value is FormData {
-    return value instanceof FormData;
-}
-
 function getQueryString(params: Record<string, any>): string {
     const qs: string[] = [];
     Object.keys(params).forEach(key => {
@@ -5121,6 +5161,10 @@ function getUrl(options: ApiRequestOptions, config: ClientConfig): string {
     return url;
 }
 
+function isFormData(value: any): value is FormData {
+    return value instanceof FormData;
+}
+
 function getFormData(params: Record<string, any>): FormData {
     const formData = new FormData();
     Object.keys(params).forEach(key => {
@@ -5141,6 +5185,15 @@ async function resolve<T>(options: ApiRequestOptions, resolver?: T | Resolver<T>
     return resolver;
 }
 
+function filterHeaders(headers: Record<string, unknown>): Record<string, unknown> {
+    return Object.entries(headers).reduce((acc, [k, v]) => {
+        if (v !== undefined) {
+            acc[k] = v;
+        }
+        return acc;
+    }, {} as Record<string, unknown>);
+}
+
 async function getHeaders(options: ApiRequestOptions, config: ClientConfig): Promise<Headers> {
     const token = await resolve(options, config.token);
     const username = await resolve(options, config.username);
@@ -5150,7 +5203,7 @@ async function getHeaders(options: ApiRequestOptions, config: ClientConfig): Pro
     const headers = new Headers({
         Accept: 'application/json',
         ...defaultHeaders,
-        ...options.headers,
+        ...filterHeaders(options.headers),
     });
 
     if (isStringWithValue(token)) {
@@ -5626,11 +5679,13 @@ exports[`v3 should generate with exportClient: ./test/generated/v3_client/models
 /**
  * Success=1,Warning=2,Error=3
  */
-export type EnumFromDescription =
-| 1
-| 2
-| 3
-"
+export const enumFromDescriptionValues = [
+    1,
+    2,
+    3,
+] as const;
+
+export type EnumFromDescription = typeof enumFromDescriptionValues[number];"
 `;
 
 exports[`v3 should generate with exportClient: ./test/generated/v3_client/models/EnumWithExtensions.ts 1`] = `
@@ -5642,20 +5697,22 @@ exports[`v3 should generate with exportClient: ./test/generated/v3_client/models
 /**
  * This is a simple enum with numbers
  */
-export type EnumWithExtensions =
-/**
- * Used when the status of something is successful
- */
-| 200
-/**
- * Used when the status of something has a warning
- */
-| 400
-/**
- * Used when the status of something has an error
- */
-| 500
-"
+export const enumWithExtensionsValues = [
+    /**
+     * Used when the status of something is successful
+     */
+    200,
+    /**
+     * Used when the status of something has a warning
+     */
+    400,
+    /**
+     * Used when the status of something has an error
+     */
+    500,
+] as const;
+
+export type EnumWithExtensions = typeof enumWithExtensionsValues[number];"
 `;
 
 exports[`v3 should generate with exportClient: ./test/generated/v3_client/models/EnumWithNumbers.ts 1`] = `
@@ -5667,23 +5724,25 @@ exports[`v3 should generate with exportClient: ./test/generated/v3_client/models
 /**
  * This is a simple enum with numbers
  */
-export type EnumWithNumbers =
-| 1
-| 2
-| 3
-| 1.1
-| 1.2
-| 1.3
-| 100
-| 200
-| 300
-| -100
-| -200
-| -300
-| -1.1
-| -1.2
-| -1.3
-"
+export const enumWithNumbersValues = [
+    1,
+    2,
+    3,
+    1.1,
+    1.2,
+    1.3,
+    100,
+    200,
+    300,
+    -100,
+    -200,
+    -300,
+    -1.1,
+    -1.2,
+    -1.3,
+] as const;
+
+export type EnumWithNumbers = typeof enumWithNumbersValues[number];"
 `;
 
 exports[`v3 should generate with exportClient: ./test/generated/v3_client/models/EnumWithStrings.ts 1`] = `
@@ -5695,11 +5754,13 @@ exports[`v3 should generate with exportClient: ./test/generated/v3_client/models
 /**
  * This is a simple enum with strings
  */
-export type EnumWithStrings =
-| 'Success'
-| 'Warning'
-| 'Error'
-"
+export const enumWithStringsValues = [
+    'Success',
+    'Warning',
+    'Error',
+] as const;
+
+export type EnumWithStrings = typeof enumWithStringsValues[number];"
 `;
 
 exports[`v3 should generate with exportClient: ./test/generated/v3_client/models/ModelThatExtends.ts 1`] = `
@@ -9038,10 +9099,6 @@ function isBlob(value: any): value is Blob {
     return value instanceof Blob;
 }
 
-function isFormData(value: any): value is FormData {
-    return value instanceof FormData;
-}
-
 function getQueryString(params: Record<string, any>): string {
     const qs: string[] = [];
     Object.keys(params).forEach(key => {
@@ -9072,6 +9129,10 @@ function getUrl(options: ApiRequestOptions, config: ClientConfig): string {
     return url;
 }
 
+function isFormData(value: any): value is FormData {
+    return value instanceof FormData;
+}
+
 function getFormData(params: Record<string, any>): FormData {
     const formData = new FormData();
     Object.keys(params).forEach(key => {
@@ -9092,6 +9153,15 @@ async function resolve<T>(options: ApiRequestOptions, resolver?: T | Resolver<T>
     return resolver;
 }
 
+function filterHeaders(headers: Record<string, unknown>): Record<string, unknown> {
+    return Object.entries(headers).reduce((acc, [k, v]) => {
+        if (v !== undefined) {
+            acc[k] = v;
+        }
+        return acc;
+    }, {} as Record<string, unknown>);
+}
+
 async function getHeaders(options: ApiRequestOptions, config: ClientConfig): Promise<Headers> {
     const token = await resolve(options, config.token);
     const username = await resolve(options, config.username);
@@ -9101,7 +9171,7 @@ async function getHeaders(options: ApiRequestOptions, config: ClientConfig): Pro
     const headers = new Headers({
         Accept: 'application/json',
         ...defaultHeaders,
-        ...options.headers,
+        ...filterHeaders(options.headers),
     });
 
     if (isStringWithValue(token)) {

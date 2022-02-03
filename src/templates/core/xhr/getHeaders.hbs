@@ -7,7 +7,7 @@ async function getHeaders(options: ApiRequestOptions, config: ClientConfig): Pro
     const headers = new Headers({
         Accept: 'application/json',
         ...defaultHeaders,
-        ...options.headers,
+        ...filterHeaders(options.headers),
     });
 
     if (isStringWithValue(token)) {
